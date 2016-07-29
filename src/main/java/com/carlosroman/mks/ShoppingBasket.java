@@ -2,6 +2,7 @@ package com.carlosroman.mks;
 
 import com.carlosroman.mks.model.Product;
 import com.google.common.collect.ConcurrentHashMultiset;
+import com.google.common.collect.HashMultiset;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Multiset;
 
@@ -13,7 +14,6 @@ public class ShoppingBasket {
 
     private ShoppingBasket(final Multiset<String> items) {
         this.items = items;
-        // ConcurrentHashMultiset
     }
 
     public static ShoppingBasket create() {
@@ -34,5 +34,11 @@ public class ShoppingBasket {
 
     public List<String> getAllProductCodes() {
         return ImmutableList.copyOf(this.items.elementSet());
+    }
+
+    public Multiset<String> getBasket() {
+        final HashMultiset<String> strings = HashMultiset.create(this.items.size());
+        this.items.entrySet().forEach(entry -> strings.add(entry.getElement(), entry.getCount()));
+        return strings;
     }
 }

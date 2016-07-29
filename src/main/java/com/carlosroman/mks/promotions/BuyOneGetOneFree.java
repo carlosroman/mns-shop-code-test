@@ -1,7 +1,10 @@
 package com.carlosroman.mks.promotions;
 
+import com.carlosroman.mks.model.Product;
 import com.google.common.collect.ImmutableList;
+import com.google.common.collect.Multiset;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 public class BuyOneGetOneFree implements Promotion {
@@ -21,5 +24,10 @@ public class BuyOneGetOneFree implements Promotion {
     @Override
     public List<String> productCodes() {
         return this.productCodes;
+    }
+
+    @Override
+    public BigDecimal sumTotal(Multiset<Product> productsAndCounts) {
+        return null;
     }
 }
