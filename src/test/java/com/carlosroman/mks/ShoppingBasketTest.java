@@ -19,7 +19,6 @@ public class ShoppingBasketTest {
         assertThat(ShoppingBasket.create().isEmpty()).isTrue();
     }
 
-
     @Test
     public void shouldNotBeEmptyAfterAddingItem() throws Exception {
         undertest.addProduct(PRODUCT);
