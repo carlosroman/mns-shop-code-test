@@ -41,4 +41,8 @@ public class ShoppingBasket {
         this.items.entrySet().forEach(entry -> strings.add(entry.getElement(), entry.getCount()));
         return strings;
     }
+
+    public void clear(){
+        this.items.clear();
+    }
 }

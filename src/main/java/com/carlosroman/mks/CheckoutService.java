@@ -39,10 +39,7 @@ public class CheckoutService {
             if (!promoItems.isEmpty()) {
                 final BigDecimal total = promotion.sumTotal(promoItems);
                 if (!promoItems.isEmpty()) {
-                    promoItems.forEach(product -> {
-                        System.out.println("S:" + product);
-                        basketMultiset.add(product.getCode(), promoItems.count(product));
-                    });
+                    promoItems.forEach(product -> basketMultiset.add(product.getCode(), promoItems.count(product)));
                 }
                 return total;
             }
@@ -60,17 +57,19 @@ public class CheckoutService {
             return ZERO;
         });
 
-        final Optional<BigDecimal> reduce = sumStream.reduce(BigDecimal::add);
-
-        if (reduce.isPresent() && promoTotal.isPresent()) {
-            return reduce.get().add(promoTotal.get()).setScale(2, RoundingMode.DOWN);
-        }
-
-        return new BigDecimal(-1);
+        final Optional<BigDecimal> otherTotal = sumStream.reduce(BigDecimal::add);
+        return calTotal(promoTotal, otherTotal).setScale(2, RoundingMode.DOWN);
     }
 
-    public BigDecimal getShippingCost(BigDecimal basketTotal) {
+    private BigDecimal calTotal(Optional<BigDecimal> promoTotal, Optional<BigDecimal> otherTotal) {
+        if (promoTotal.isPresent() && otherTotal.isPresent()) {
+            return promoTotal.get().add(otherTotal.get());
+        }
 
-        return ZERO;
+        if (promoTotal.isPresent()) {
+            return promoTotal.get();
+        }
+
+        return otherTotal.get();
     }
 }

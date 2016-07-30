@@ -25,6 +25,10 @@ public class CatalogDAO {
         this.productMap = productMap;
     }
 
+    public Map<String, Product> getProductMap() {
+        return productMap;
+    }
+
     public static CatalogDAO create(final String resourceFilePath) throws IOException {
         try (final InputStream inputStream = ClassLoader.getSystemResourceAsStream(resourceFilePath)) {
             final CsvParserSettings settings = new CsvParserSettings();
@@ -62,4 +66,5 @@ public class CatalogDAO {
     public Optional<Product> get(final String code) {
         return Optional.ofNullable(this.productMap.get(code));
     }
+
 }

@@ -10,11 +10,12 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
+import java.util.Stack;
 
 public class BuyOneGetOneFree implements Promotion {
 
     public static final String ID = "BOGOF";
-    private static final BigDecimal TWO = BigDecimal.ONE.add(BigDecimal.ONE);
+    private static final BigDecimal TWO = BigDecimal.ONE.add(BigDecimal.ONE).setScale(2, RoundingMode.DOWN);
     private final List<String> productCodes;
 
     public BuyOneGetOneFree(final List<String> productCodes) {
@@ -33,7 +34,7 @@ public class BuyOneGetOneFree implements Promotion {
 
     @Override
     public BigDecimal sumTotal(final Multiset<Product> productsAndCounts) {
-        final Queue<List<Product>> pp = new LinkedList<>();
+        final Stack<List<Product>> pp = new Stack<>();
         pp.add(new ArrayList<>());
         productsAndCounts.forEach(product -> {
             if (pp.peek().size() < 2) {
@@ -48,14 +49,15 @@ public class BuyOneGetOneFree implements Promotion {
         final List<BigDecimal> sums = new ArrayList<>();
         sums.add(BigDecimal.ZERO);
         while (!pp.isEmpty()) {
-            final List<Product> remove = pp.remove();
+            final List<Product> remove = pp.pop();
             if (remove.size() == 2) {
                 productsProcessed.addAll(remove);
-                sums.add(remove.get(0).getPrice().add(remove.get(1).getPrice().divide(TWO, BigDecimal.ROUND_UP)));
+                final BigDecimal divide = remove.get(1).getPrice().divide(TWO, RoundingMode.DOWN).setScale(2, RoundingMode.DOWN);
+                sums.add(remove.get(0).getPrice().add(divide));
             }
         }
 
-        productsAndCounts.removeAll(productsProcessed);
-        return sums.stream().reduce(BigDecimal::add).get().setScale(2, RoundingMode.CEILING);
+        productsProcessed.forEach(product -> productsAndCounts.remove(product, 1));
+        return sums.stream().reduce(BigDecimal::add).get().setScale(2, RoundingMode.DOWN);
     }
 }
