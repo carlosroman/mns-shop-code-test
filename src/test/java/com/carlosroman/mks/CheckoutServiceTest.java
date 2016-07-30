@@ -23,15 +23,16 @@ import static org.mockito.Mockito.mock;
 public class CheckoutServiceTest {
 
     private final CatalogDAO catalogDAO = mock(CatalogDAO.class);
+    private final PromotionsService promotionsService = mock(PromotionsService.class);
     private final Promotion promotionThree = mock(Promotion.class);
-    private final List<Promotion> promotions = Arrays.asList(promotionThree);
+    private final List<Promotion> promotions = Collections.unmodifiableList(Arrays.asList(promotionThree));
     private final ShoppingBasket shoppingBasket = mock(ShoppingBasket.class);
 
     private Product productOne = new Product.Builder().withCode("one").withName("Jeans One").withPrice(new BigDecimal(10)).build();
     private Product productTwo = new Product.Builder().withCode("two").withName("Jeans Two").withPrice(new BigDecimal(15)).build();
     private Product productPromo = new Product.Builder().withCode("promo").withName("Jeans Two").withPrice(new BigDecimal(20)).build();
 
-    private final CheckoutService undertest = new CheckoutService(catalogDAO, Collections.unmodifiableList(promotions));
+    private final CheckoutService undertest = new CheckoutService(catalogDAO, promotionsService);
 
 
     @Test
@@ -39,6 +40,7 @@ public class CheckoutServiceTest {
         final HashMultiset<String> value = HashMultiset.create();
         value.add("one", 2);
         value.add("two", 1);
+        given(promotionsService.getPromotions()).willReturn(promotions);
         given(shoppingBasket.getBasket()).willReturn(value);
         given(promotionThree.productCodes()).willReturn(Arrays.asList("promo"));
 
@@ -51,6 +53,7 @@ public class CheckoutServiceTest {
 
     @Test
     public void shouldApplyPromotionToTotal() throws Exception {
+        given(promotionsService.getPromotions()).willReturn(promotions);
         given(shoppingBasket.getAllProductCodes()).willReturn(Arrays.asList("promo", "two"));
         final HashMultiset<String> value = HashMultiset.create();
         value.add("promo", 2);

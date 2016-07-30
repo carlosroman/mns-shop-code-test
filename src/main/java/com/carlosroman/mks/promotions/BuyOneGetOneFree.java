@@ -13,7 +13,7 @@ import java.util.Queue;
 
 public class BuyOneGetOneFree implements Promotion {
 
-    private static final String ID = "BOGOF";
+    public static final String ID = "BOGOF";
     private static final BigDecimal TWO = BigDecimal.ONE.add(BigDecimal.ONE);
     private final List<String> productCodes;
 

@@ -1,32 +1,30 @@
 package com.carlosroman.mks;
 
 import com.carlosroman.mks.model.Product;
-import com.carlosroman.mks.promotions.Promotion;
 import com.google.common.collect.ConcurrentHashMultiset;
 import com.google.common.collect.Multiset;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
-import java.util.List;
 import java.util.Optional;
 import java.util.stream.Stream;
 
 public class CheckoutService {
 
     private final CatalogDAO catalogDAO;
-    private final List<Promotion> promotions;
+    private final PromotionsService promotionsService;
 
     public CheckoutService(final CatalogDAO catalogDAO,
-                           final List<Promotion> promotions) {
+                           final PromotionsService promotionsService) {
         this.catalogDAO = catalogDAO;
-        this.promotions = promotions;
+        this.promotionsService = promotionsService;
     }
 
     public BigDecimal getTotalFor(final ShoppingBasket shoppingBasket) {
 
         final Multiset<String> basketMultiset = shoppingBasket.getBasket();
 
-        final Stream<BigDecimal> promoStream = promotions.stream().map(promotion -> {
+        final Stream<BigDecimal> promoStream = promotionsService.getPromotions().stream().map(promotion -> {
             final Multiset<Product> promoItems = ConcurrentHashMultiset.create();
             promotion.productCodes().stream().parallel().forEach(code -> {
                 if (basketMultiset.contains(code)) {
@@ -41,7 +39,7 @@ public class CheckoutService {
                 final BigDecimal total = promotion.sumTotal(promoItems);
                 if (!promoItems.isEmpty()) {
                     promoItems.forEach(product -> {
-                        System.out.println("S:"+product);
+                        System.out.println("S:" + product);
                         basketMultiset.add(product.getCode(), promoItems.count(product));
                     });
                 }

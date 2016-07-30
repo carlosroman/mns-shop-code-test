@@ -1,8 +1,12 @@
 {
   "promotions":[
     {
-      "id" : "BOG",
+      "id" : "BOGOF",
       "product_codes" :["J01"]
+    },
+    {
+      "id" : "BOGOF",
+      "product_codes" :["AAA", "BBB"]
     }
   ]
 }
