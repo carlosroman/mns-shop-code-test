@@ -77,6 +77,5 @@ public class CheckoutServiceTest {
         final BigDecimal total = undertest.getTotalFor(shoppingBasket);
 
         assertThat(total).isEqualTo(new BigDecimal(30).setScale(2, RoundingMode.CEILING));
-
     }
 }

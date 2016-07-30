@@ -36,7 +36,7 @@ public class CatalogDAO {
                 @Override
                 public void rowProcessed(Object[] row, ParsingContext context) {
 
-                    final BigDecimal price = ((BigDecimal) row[2]).setScale(2, RoundingMode.CEILING);
+                    final BigDecimal price = ((BigDecimal) row[2]).setScale(2, RoundingMode.DOWN);
                     final Product product = new Product.Builder()
                             .withCode((String) row[1])
                             .withName((String) row[0])
