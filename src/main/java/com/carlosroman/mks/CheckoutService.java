@@ -47,7 +47,7 @@ public class CheckoutService {
                 }
                 return total;
             }
-            return new BigDecimal(0);
+            return BigDecimal.ZERO;
         });
 
         final Optional<BigDecimal> promoTotal = promoStream.reduce(BigDecimal::add);
@@ -58,7 +58,7 @@ public class CheckoutService {
                 final int productCount = item.getCount();
                 return product.get().getPrice().multiply(BigDecimal.valueOf(productCount));
             }
-            return new BigDecimal(0);
+            return BigDecimal.ZERO;
         });
 
         final Optional<BigDecimal> reduce = sumStream.reduce(BigDecimal::add);
