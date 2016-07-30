@@ -12,13 +12,13 @@ import java.util.List;
 import java.util.Queue;
 import java.util.Stack;
 
-public class BuyOneGetOneFree implements Promotion {
+public class BuyOneGetOneHalfPrice implements Promotion {
 
-    public static final String ID = "BOGOF";
+    public static final String ID = "BOGOHP";
     private static final BigDecimal TWO = BigDecimal.ONE.add(BigDecimal.ONE).setScale(2, RoundingMode.DOWN);
     private final List<String> productCodes;
 
-    public BuyOneGetOneFree(final List<String> productCodes) {
+    public BuyOneGetOneHalfPrice(final List<String> productCodes) {
         this.productCodes = ImmutableList.copyOf(productCodes);
     }
 

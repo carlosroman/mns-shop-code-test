@@ -11,13 +11,13 @@ import java.util.stream.IntStream;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class BuyOneGetOneFreeTest {
+public class BuyOneGetOneHalfPriceTest {
 
     private static final BigDecimal PRICE = new BigDecimal(32.95);
     public static final BigDecimal EXPECTED = new BigDecimal(49.42).setScale(2, RoundingMode.DOWN);
     private static final Product PROD_ONE = new Product.Builder().withCode("J01").withName("Blue Jeans").withPrice(PRICE).build();
     private static final Product PROD_TWO = new Product.Builder().withCode("J02").withName("Green Jeans").withPrice(PRICE).build();
-    private final BuyOneGetOneFree undertest = new BuyOneGetOneFree(ImmutableList.of(PROD_ONE.getCode(), PROD_TWO.getCode()));
+    private final BuyOneGetOneHalfPrice undertest = new BuyOneGetOneHalfPrice(ImmutableList.of(PROD_ONE.getCode(), PROD_TWO.getCode()));
 
     @Test
     public void shouldReturnTotalOfZeroIfPromotionNotTriggered() throws Exception {

@@ -1,11 +1,11 @@
 {
   "promotions":[
     {
-      "id" : "BOGOF",
+      "id" : "BOGOHP",
       "product_codes" :["J01"]
     },
     {
-      "id" : "BOGOF",
+      "id" : "BOGOHP",
       "product_codes" :["AAA", "BBB"]
     }
   ]

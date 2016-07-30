@@ -1,6 +1,6 @@
 package com.carlosroman.mks;
 
-import com.carlosroman.mks.promotions.BuyOneGetOneFree;
+import com.carlosroman.mks.promotions.BuyOneGetOneHalfPrice;
 import com.carlosroman.mks.promotions.Promotion;
 import com.jayway.jsonpath.Configuration;
 import com.jayway.jsonpath.JsonPath;
@@ -31,10 +31,10 @@ public class PromotionsService {
                     .read("$.promotions");
             final ArrayList<Promotion> promos = new ArrayList<>();
             res.forEach(promo -> {
-                if (BuyOneGetOneFree.ID.equals(promo.get(ID))) {
+                if (BuyOneGetOneHalfPrice.ID.equals(promo.get(ID))) {
                     final JSONArray productCodes = (JSONArray) promo.get(PRODUCT_CODES);
                     final List<String> pc = productCodes.stream().map(a -> (String) a).collect(Collectors.toList());
-                    promos.add(new BuyOneGetOneFree(pc));
+                    promos.add(new BuyOneGetOneHalfPrice(pc));
                 }
             });
             return new PromotionsService(Collections.unmodifiableList(promos));
